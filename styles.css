@@ -1,0 +1,46 @@
+html {
+    background-color: whitesmoke;
+}
+#main{
+    display: grid;
+    grid-template-rows: auto auto;
+}
+
+#submit-area{
+    justify-self:center;
+    display:grid;
+    grid-template-rows: auto;
+    position: relative;
+}
+
+label{
+    margin-top: 0.5rem;
+}
+button{
+    margin-top: 0.5rem;
+}
+
+#game-container{
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display:grid;
+    grid-template-rows: auto auto auto;
+    grid-template-columns: auto auto auto;
+}
+
+.game-cell{
+    border-style: solid;
+    border-color: gray;
+    width: 10rem;
+    height: 10rem;
+    border-width: 1px;
+}
+
+#game-message{
+    position: absolute;
+    left:50%;
+    top: 20%;
+    transform: translate(-50%, -50%);
+}
