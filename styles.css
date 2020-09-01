@@ -36,6 +36,10 @@ button{
     width: 10rem;
     height: 10rem;
     border-width: 1px;
+    font-family: monospace;
+    font-size: 10rem;
+    text-justify: center;
+    text-align: center;
 }
 
 #game-message{

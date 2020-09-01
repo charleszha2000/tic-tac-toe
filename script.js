@@ -1,9 +1,6 @@
-//Blankboard is 3x3 Array of Empty String, it represents an empty game board
-const blankboard = [["", "", ""], ["", "", ""], 
-["", "", ""]];
-
 const gameboard = (() => {
-    let board = blankboard; //gameboard defined by a 3x3 array of strings;
+    let board = [["", "", ""], ["", "", ""], 
+    ["", "", ""]]; //gameboard defined by a 3x3 array of strings;
     const play = function (i, j, symbol) {
         if(board[i][j] == "") {
             board[i][j] = symbol;
@@ -52,7 +49,14 @@ const gameboard = (() => {
         }
         return false;
     }
-    return {board, play, checkGame};
+    function resetBoard(){
+        for(i = 0; i < board.length; i++){
+            for(j = 0; j < board.length; j++){
+                board[i][j] = "";
+            }
+        }
+    }
+    return {board, play, checkGame, resetBoard};
 })();
 
 const displayController = (() => {
@@ -62,8 +66,9 @@ const displayController = (() => {
     let initialized = false;
     let finished = false;
     let draw = false;
+
     const initializeGame = function(){
-        gameboard.board = blankboard;
+        gameboard.resetBoard();
         renderBoard();
         finished = false;
         player1turn = true;
@@ -72,24 +77,25 @@ const displayController = (() => {
             initialized = true;
             startButton = document.querySelector("#start");
             startButton.addEventListener('click', () => {
-                initializeGame();
+                displayController.initializeGame();
                 let pName = document.querySelector("#player1").value;
                 player1.name = (pName == '') ? 'Player 1' : pName;
-                pName = document.querySelector("#player1").value;
+                pName = document.querySelector("#player2").value;
                 player2.name = (pName == '') ? 'Player 2' : pName;
                 startButton.textContent = "Reset";
                 updateText();
             });
+            return;
         }
         const gameCells = document.querySelectorAll(".game-cell");
         gameCells.forEach(cell => cell.addEventListener('click', () => {
             advanceGame(cell.id.charAt(0), cell.id.charAt(1));
         }));
     }
+
     function renderBoard(){
         const gameContainer = document.querySelector("#game-container");
         gameContainer.innerHTML = '';
-        
         for(i = 0; i < gameboard.board.length; i++){
             for (j = 0; j < gameboard.board.length; j++) {
                 let cell = document.createElement("div");
@@ -100,7 +106,9 @@ const displayController = (() => {
             }
         }
     }
+
     function updateText(){
+        console.log("updating text");
         const gameMessage = document.getElementById("game-message");
         if(!finished) {
             const player = player1turn ? player1 : player2;
@@ -112,8 +120,10 @@ const displayController = (() => {
             gameMessage.textContent = player.getWinMessage() + " Play again?"
         }
     }
+
     function advanceGame(i, j) {
-        let activeSymbol = player1turn ? player1 : player2;
+        
+        let activeSymbol = player1turn ? player1.symbol : player2.symbol;
         if(!gameboard.play(i, j, activeSymbol) || finished) {
             return;
         }
@@ -129,6 +139,7 @@ const displayController = (() => {
         updateText();
         document.getElementById("start").textContent = "Play!";
     }
+
     return({initializeGame});
 })();
 
